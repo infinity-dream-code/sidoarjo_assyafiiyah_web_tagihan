@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Cek & Bayar Tagihan - Al-Syukro",
-  "short_name": "Al-Syukro",
-  "description": "Cek dan bayar tagihan siswa Al-Syukro",
+  "name": "Cek & Bayar Tagihan - Ponpes Asy-Syafi'iyah",
+  "short_name": "Asy-Syafi'iyah",
+  "description": "Cek dan bayar tagihan siswa Ponpes Asy-Syafi'iyah, Kab. Sidoarjo, Prov. Jawa Timur",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
@@ -21,16 +21,28 @@
   ],
   "icons": [
     {
-      "src": "/icon.png",
-      "sizes": "any",
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon.png",
-      "sizes": "any",
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "/iconme.jpg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any"
     }
   ]
 }

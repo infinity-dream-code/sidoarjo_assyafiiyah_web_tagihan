@@ -1,12 +1,14 @@
-/* Al-Syukro PWA service worker */
-const CACHE_VERSION = 'al-syukro-v1';
+/* Ponpes Asy-Syafi'iyah PWA service worker */
+const CACHE_VERSION = 'asy-syafiiyah-v1';
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const OFFLINE_URL = '/offline.html';
 
 const PRECACHE_URLS = [
   OFFLINE_URL,
   '/manifest.webmanifest',
-  '/icon.png',
+  '/iconme.jpg',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
 ];
 
 self.addEventListener('install', (event) => {
