@@ -119,7 +119,7 @@ class TagihanController extends Controller
 
         if (empty($result['status'])) {
             return back()->with([
-                'error' => $result['message'] ?? 'VA atau password salah, atau data tidak ditemukan',
+                'error' => $result['message'] ?? 'NIS atau password salah, atau data tidak ditemukan',
                 'va' => $request->no_cust,
                 'academic_year' => $academicYear
             ])->withInput($request->except('password'));

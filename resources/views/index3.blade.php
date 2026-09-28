@@ -311,8 +311,8 @@ h1{font-size:1.15rem}
       <div class="section-title">Informasi akun</div>
       <div class="form-grid">
         <div class="field">
-          <label>Nomor virtual account <em>*</em></label>
-          <input type="text" name="no_cust" id="noCust" inputmode="numeric" autocomplete="username" placeholder="797766xxx" value="{{ old('no_cust', $va ?? '') }}" required>
+          <label>Nomor induk siswa <em>*</em></label>
+          <input type="text" name="no_cust" id="noCust" inputmode="numeric" autocomplete="username" placeholder="Masukkan nomor induk siswa" value="{{ old('no_cust', $va ?? '') }}" required>
         </div>
         <div class="field">
           <label>Password <em>*</em></label>
@@ -389,7 +389,7 @@ h1{font-size:1.15rem}
           <div class="sf"><label>Kelas</label><p>{{ $result['data']['kelas'] ?? '-' }}</p></div>
           <div class="sf"><label>Angkatan</label><p>{{ ($academic_year ?? 'all') === 'all' ? 'Semua' : $academic_year }}</p></div>
           <div class="sf"><label>Saldo VA</label><p>Rp {{ number_format($result['data']['saldo'] ?? 0, 0, ',', '.') }}</p></div>
-          <div class="sf"><label>NOVA</label><p>{{ $result['data']['va_number'] ?? '-' }}</p></div>
+          <div class="sf"><label>NIS</label><p>{{ \App\Http\Controllers\TagihanController::normalizeVa($result['data']['no_cust'] ?? ($result['data']['va_number'] ?? ($va ?? ''))) ?: '-' }}</p></div>
           <div class="sf"><label>Jenjang</label><p>{{ $result['data']['jenjang'] ?? '-' }}</p></div>
         </div>
 
@@ -705,7 +705,7 @@ h1{font-size:1.15rem}
           >
             <div class="ma-item-main">
               <p class="ma-item-name">{{ $acc['nama'] ?? '-' }}</p>
-              <p class="ma-item-meta">{{ $acc['kelas'] ?? '-' }} · VA {{ $acc['va_display'] ?? ($acc['no_cust'] ?? '-') }}</p>
+              <p class="ma-item-meta">{{ $acc['kelas'] ?? '-' }} · NIS {{ $acc['no_cust'] ?? ($acc['va_display'] ?? '-') }}</p>
             </div>
             <div class="ma-item-right">
               <span class="badge {{ $isActive ? 'badge-active' : 'badge-inactive' }}">{{ $isActive ? 'Aktif' : 'Nonaktif' }}</span>
@@ -724,8 +724,8 @@ h1{font-size:1.15rem}
       <form id="multiAkunForm" onsubmit="return submitTambahMultiAkun(event)">
         @csrf
         <div class="field">
-          <label>Nomor virtual account <em>*</em></label>
-          <input type="text" name="no_cust" id="maNoCust" placeholder="797766xxx" required autocomplete="username">
+          <label>Nomor induk siswa <em>*</em></label>
+          <input type="text" name="no_cust" id="maNoCust" placeholder="Masukkan nomor induk siswa" required autocomplete="username">
         </div>
         <div class="field">
           <label>Password <em>*</em></label>
@@ -1095,7 +1095,7 @@ function renderMultiAkunList(accounts) {
     const active = !!acc.is_active;
     const nama = esc(acc.nama || '-');
     const kelas = esc(acc.kelas || '-');
-    const va = esc(acc.va_display || acc.no_cust || '-');
+    const va = esc(acc.no_cust || acc.va_display || '-');
     const noCust = esc(String(acc.no_cust || ''));
     const delBtn = showDelete
       ? `<button type="button" class="ma-del" data-hapus-no-cust="${noCust}" title="Hapus dari multi akun" aria-label="Hapus dari multi akun">
@@ -1106,7 +1106,7 @@ function renderMultiAkunList(accounts) {
       <div class="ma-item ${active ? 'is-active' : ''}" data-no-cust="${noCust}" ${active ? 'aria-current="true"' : ''}>
         <div class="ma-item-main">
           <p class="ma-item-name">${nama}</p>
-          <p class="ma-item-meta">${kelas} · VA ${va}</p>
+          <p class="ma-item-meta">${kelas} · NIS ${va}</p>
         </div>
         <div class="ma-item-right">
           <span class="badge ${active ? 'badge-active' : 'badge-inactive'}">${active ? 'Aktif' : 'Nonaktif'}</span>
@@ -1227,7 +1227,7 @@ async function submitTambahMultiAkun(e) {
   const password = document.getElementById('maPassword')?.value || '';
   const academicYear = 'all';
   if (!noCust || !password) {
-    showMaError('Lengkapi VA dan password');
+    showMaError('Lengkapi nomor induk siswa dan password');
     return false;
   }
   if (btn) {
