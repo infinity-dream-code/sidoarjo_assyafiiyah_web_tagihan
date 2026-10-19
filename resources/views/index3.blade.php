@@ -387,7 +387,7 @@ h1{font-size:1.15rem}
         <div class="student-grid">
           <div class="sf"><label>Nama</label><p>{{ $result['data']['nama'] ?? '-' }}</p></div>
           <div class="sf"><label>Kelas</label><p>{{ $result['data']['kelas'] ?? '-' }}</p></div>
-          <div class="sf"><label>Angkatan</label><p>{{ ($academic_year ?? 'all') === 'all' ? 'Semua' : $academic_year }}</p></div>
+          <div class="sf"><label>Angkatan</label><p>{{ $result['data']['tahun_akademik'] ?? '-' }}</p></div>
           <div class="sf"><label>Saldo VA</label><p>Rp {{ number_format($result['data']['saldo'] ?? 0, 0, ',', '.') }}</p></div>
           <div class="sf"><label>NIS</label><p>{{ \App\Http\Controllers\TagihanController::normalizeVa($result['data']['no_cust'] ?? ($result['data']['va_number'] ?? ($va ?? ''))) ?: '-' }}</p></div>
           <div class="sf"><label>Jenjang</label><p>{{ $result['data']['jenjang'] ?? '-' }}</p></div>
