@@ -41,7 +41,7 @@ class TagihanController extends Controller
             return '-';
         }
 
-        return '757777'.$n;
+        return '757777'.str_pad($n, 10, '0', STR_PAD_LEFT);
     }
 
     public function cek(Request $request)

@@ -1295,7 +1295,8 @@ function formatNovaDisplay(va) {
   if (!n || n === '-') return '-';
   n = n.replace(/^(757777|797766|751000)/, '');
   n = n.replace(/^0+/, '') || n;
-  return n ? ('757777' + n) : '-';
+  if (!n) return '-';
+  return '757777' + n.padStart(10, '0');
 }
 
 function esc(s) {
