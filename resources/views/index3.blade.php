@@ -389,7 +389,7 @@ h1{font-size:1.15rem}
           <div class="sf"><label>Kelas</label><p>{{ $result['data']['kelas'] ?? '-' }}</p></div>
           <div class="sf"><label>Angkatan</label><p>{{ $result['data']['tahun_akademik'] ?? '-' }}</p></div>
           <div class="sf"><label>Saldo VA</label><p>Rp {{ number_format($result['data']['saldo'] ?? 0, 0, ',', '.') }}</p></div>
-          <div class="sf"><label>NIS</label><p>{{ \App\Http\Controllers\TagihanController::normalizeVa($result['data']['no_cust'] ?? ($result['data']['va_number'] ?? ($va ?? ''))) ?: '-' }}</p></div>
+          <div class="sf"><label>VA</label><p>{{ $result['data']['va_number'] ?? \App\Http\Controllers\TagihanController::formatNova($result['data']['no_cust'] ?? ($va ?? '')) }}</p></div>
           <div class="sf"><label>Jenjang</label><p>{{ $result['data']['jenjang'] ?? '-' }}</p></div>
         </div>
 
