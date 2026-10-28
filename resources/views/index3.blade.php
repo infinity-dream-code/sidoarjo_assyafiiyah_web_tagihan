@@ -251,6 +251,10 @@ html.dark .ma-success{background:#052e16;border-color:#14532d;color:#86efac}
 .scroll-top{position:fixed;bottom:max(1.15rem,env(safe-area-inset-bottom));right:max(1rem,env(safe-area-inset-right));width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(19,38,26,.12);z-index:20}
 .scroll-top:hover{background:var(--surface2)}
 .empty-note{text-align:center;padding:1.5rem 1rem;color:var(--text3);font-size:13px}
+.bill-total{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:flex-end;align-items:stretch;margin-top:.85rem;padding:12px 14px;border-radius:12px;background:var(--accent-soft);border:1px solid var(--border)}
+.bill-total-item{display:flex;flex-direction:column;gap:3px;min-width:140px}
+.bill-total-item span{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text3)}
+.bill-total-item b{font-size:15px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
 @media(min-width:900px){
 .wrap{padding:1.5rem 1.5rem 2.75rem;padding-left:max(1.5rem,env(safe-area-inset-left));padding-right:max(1.5rem,env(safe-area-inset-right))}
 .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.15rem;align-items:end}
@@ -377,6 +381,25 @@ h1{font-size:1.15rem}
   @if(isset($result))
     @if($result['status'])
       <div class="card" id="resultSection">
+        @php
+          $tagihanAktifList = $result['data']['tagihan'] ?? [];
+          $totalAktifNominal = 0;
+          $totalAktifSisa = 0;
+          $totalAktifBayar = 0;
+          foreach ($tagihanAktifList as $tagihSum) {
+            $sumNominal = (int) ($tagihSum['total_tagihan'] ?? 0);
+            $sumBayar = (int) ($tagihSum['sudah_dibayar'] ?? 0);
+            $sumSisa = (int) ($tagihSum['sisa_tagihan'] ?? max(0, $sumNominal - $sumBayar));
+            $totalAktifNominal += $sumNominal;
+            $totalAktifSisa += $sumSisa;
+            $totalAktifBayar += $sumBayar;
+          }
+          $tagihanLunasList = $result['data']['tagihan_lunas'] ?? [];
+          $totalLunasNominal = 0;
+          foreach ($tagihanLunasList as $tagihSum) {
+            $totalLunasNominal += (int) ($tagihSum['total_tagihan'] ?? 0);
+          }
+        @endphp
         <div class="siswa-head">
           <div class="section-title">Data siswa</div>
           <div class="tbl-controls">
@@ -513,6 +536,22 @@ h1{font-size:1.15rem}
           @endforelse
         </div>
         <div id="tagihanPagination" class="pagination"></div>
+        @if(!empty($tagihanAktifList))
+        <div class="bill-total">
+          <div class="bill-total-item">
+            <span>Total tagihan aktif</span>
+            <b>Rp {{ number_format($totalAktifNominal, 0, ',', '.') }}</b>
+          </div>
+          <div class="bill-total-item">
+            <span>Sudah dibayar</span>
+            <b>Rp {{ number_format($totalAktifBayar, 0, ',', '.') }}</b>
+          </div>
+          <div class="bill-total-item">
+            <span>Total sisa</span>
+            <b>Rp {{ number_format($totalAktifSisa, 0, ',', '.') }}</b>
+          </div>
+        </div>
+        @endif
 
         @if(!empty($result['data']['tagihan']))
           @if($viewOnly)
@@ -595,6 +634,14 @@ h1{font-size:1.15rem}
           @endforelse
         </div>
         <div id="lunasPagination" class="pagination"></div>
+        @if(!empty($tagihanLunasList))
+        <div class="bill-total">
+          <div class="bill-total-item">
+            <span>Total tagihan lunas</span>
+            <b>Rp {{ number_format($totalLunasNominal, 0, ',', '.') }}</b>
+          </div>
+        </div>
+        @endif
       </div>
       <script>setTimeout(()=>{document.getElementById('resultSection').scrollIntoView({behavior:'smooth',block:'start'})},100);</script>
     @else
